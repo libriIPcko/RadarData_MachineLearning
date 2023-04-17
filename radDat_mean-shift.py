@@ -4,6 +4,7 @@ from sklearn.cluster import MeanShift, estimate_bandwidth
 import matplotlib.pyplot as plt
 from PIL import Image
 import imageio
+import cv2
 import time
 
 path_1440frames = 'C:/Users/bob\Documents/build-RadarVisualizer-Desktop_Qt_6_4_2_MinGW_64_bit-Release/release/parse_script/ParsedData/parsOut_5.4__22_12_5.csv'
@@ -11,6 +12,10 @@ path_1199frames = 'C:/Users/bob\Documents/build-RadarVisualizer-Desktop_Qt_6_4_2
 data = np.genfromtxt(path_1199frames,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path_1199frames,delimiter=',',skip_header=1)
 focusedFrame = 0
+
+# Create a VideoWriter object
+fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (640, 480))
 
 #selection on focusedFrame data
 indices = np.argwhere(data[:,0] == focusedFrame)
@@ -74,14 +79,23 @@ while(i<lastFrame):
     #***********
     # save the plot as an image
     fig = plt.gcf()
-    fig.canvas.draw()
-    image = Image.frombytes('RGB', fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
+    #To GIF
+    #fig.canvas.draw()
+    #image = Image.frombytes('RGB', fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
     #image = Image.frombytes(fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
-    images.append(image)
+    #images.append(image)
+
+    #To vid
+    # Save the figure as a PNG image
+    fig.savefig(f"figure_radDat_mean_shift/frame_{i:04d}.png")
+    # Load the image and write it to the video file
+    img = cv2.imread(f"figure_radDat_mean_shift/frame_{i:04d}.png")
+    video_writer.write(img)
     endTime = time.process_time()
     print("Current progress: %d/%d - Duration: %.5f" %(focusedFrame,lastFrame,(endTime-startTime)))
     i=i+1
 # create the GIF from the list of images
-imageio.mimsave('plots_new.gif', images, duration=0.5)
+#imageio.mimsave('plots_new.gif', images, duration=0.5)
+video_writer.release()
 endTime_total = time.process_time()
 print("Total time: %.5f" %(endTime_total-startTime_total))
