@@ -53,13 +53,10 @@ for k, col in zip(range(n_clusters_), colors):
 plt.title("Estimated number of clusters: %d" % n_clusters_)
 plt.show()
 
-
 #fig, ax = plt.subplots()
 #ax.scatter(x,y)
 #ax.set(xlim=(x[0], x[-1]), xticks=np.arange(0, x[-1]), ylim=(np.min(y), np.max(y)), yticks=np.arange(0, np.max(y)))
 #plt.show()
-
-
 
 #outarray = np.column_stack((x,y))
 #print (outarray)

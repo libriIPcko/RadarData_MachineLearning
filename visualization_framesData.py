@@ -21,7 +21,6 @@ data = np.hstack((x.reshape(-1,1),y.reshape(-1,1)))
 #implementation mean-shift algorithm
 # The following bandwidth can be automatically detected using
 bandwidth = estimate_bandwidth(data, quantile=0.2)
-
 ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
 ms.fit(data)
 labels = ms.labels_
@@ -30,13 +29,13 @@ cluster_centers = ms.cluster_centers_
 labels_unique = np.unique(labels)
 n_clusters_ = len(labels_unique)
 
-print("number of estimated clusters : %d" % n_clusters_)
+print("number of estimated clusters : %d \n in frame: %d" % (n_clusters_,focusedFrame))
 
 plt.figure(2)
 plt.clf()
 
-colors = ["#dede00", "#377eb8", "#f781bf"]
-markers = ["x", "o", "^"]
+colors = ["#dede00", "#377eb8", "#a701bf", "#b731bf", "#c761bf", "#d791bf", "#e801bf", "#f881ff"]
+markers = ["x", "o", "^", "|", "+", "-", "#", "&"]
 
 for k, col in zip(range(n_clusters_), colors):
     my_members = labels == k
@@ -50,7 +49,7 @@ for k, col in zip(range(n_clusters_), colors):
         markeredgecolor="k",
         markersize=14,
     )
-plt.title("Estimated number of clusters: %d" % n_clusters_)
+plt.title("number of estimated clusters : %d \n in frame: %d " % (n_clusters_,focusedFrame))
 plt.show()
 
 
