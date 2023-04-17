@@ -29,8 +29,8 @@ data = np.hstack((x.reshape(-1,1),y.reshape(-1,1)))
 lenOfFocusedData = indices[-1]-indices[0]
 print("focData/indic: %d/%d" %(data.shape[0]-1,lenOfFocusedData))
 
-#lastFrame = data_all[-1,0]
-lastFrame = 100
+lastFrame = data_all[-1,0]
+#lastFrame = 100
 images = []
 
 i=0
@@ -55,7 +55,7 @@ while(i<lastFrame):
     n_clusters_ = len(labels_unique)
 
     colors = ["#dede00", "#377eb8", "#a701bf", "#b731bf", "#c761bf", "#d791bf", "#e801bf", "#f881ff"]
-    markers = ["x", "o", "^", "|", "+", "-", "*", "&"]
+    markers = ["s", "o", "^", "|", "+", "-", "*", "x"]
     #colors = ["#dede00", "#377eb8", "#a701bf"]
     #markers = ["x", "o", "^"]
 
