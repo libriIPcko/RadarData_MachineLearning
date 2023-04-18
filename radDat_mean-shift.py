@@ -7,10 +7,13 @@ import imageio
 import cv2
 import time
 
-path_1440frames = 'C:/Users/bob\Documents/build-RadarVisualizer-Desktop_Qt_6_4_2_MinGW_64_bit-Release/release/parse_script/ParsedData/parsOut_5.4__22_12_5.csv'
-path_1199frames = 'C:/Users/bob\Documents/build-RadarVisualizer-Desktop_Qt_6_4_2_MinGW_64_bit-Release/release/parse_script/ParsedData/parsOut_16.3__19_5_43.csv'
-data = np.genfromtxt(path_1199frames,delimiter=',',skip_header=1)
-data_all = np.genfromtxt(path_1199frames,delimiter=',',skip_header=1)
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_13_xwr18xx_processed_stream_2023_03_17T12_02_36_082.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_25_static_xwr18xx_processed_stream.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
+path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
+data = np.genfromtxt(path,delimiter=',',skip_header=1)
+data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
 focusedFrame = 0
 
 # Create a VideoWriter object
@@ -32,9 +35,14 @@ print("focData/indic: %d/%d" %(data.shape[0]-1,lenOfFocusedData))
 lastFrame = data_all[-1,0]
 #lastFrame = 100
 images = []
+colors = ["#dede00", "#377eb8", "#a701bf", "#b731bf", "#c761bf", "#d791bf", "#e801bf", "#f881ff"]
+#markers = ['$1$', '$2$', '$3$', '$4$', '$5$', '$6$','$7$', '$8$']
+markers = ["v", "^", "<", ">", "1", "2", "3", "4"]
+# colors = ["#dede00", "#377eb8", "#a701bf"]
+# markers = ["x", "o", "^"]
 
-i=0
 startTime_total = time.process_time()
+i=0
 while(i<lastFrame):
     startTime = time.process_time()
     focusedFrame = i
@@ -54,10 +62,7 @@ while(i<lastFrame):
     labels_unique = np.unique(labels)
     n_clusters_ = len(labels_unique)
 
-    colors = ["#dede00", "#377eb8", "#a701bf", "#b731bf", "#c761bf", "#d791bf", "#e801bf", "#f881ff"]
-    markers = ["s", "o", "^", "|", "+", "-", "*", "x"]
-    #colors = ["#dede00", "#377eb8", "#a701bf"]
-    #markers = ["x", "o", "^"]
+
 
     plt.clf()
     plt.figure(1)
