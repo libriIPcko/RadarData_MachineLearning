@@ -29,11 +29,14 @@ startTime_total = time.process_time()
 outlineOutArray = np.empty((1,3))
 print(outlineOutArray)
 
-#lastFrame = data_all[-1,0]
-nu_params = np.linspace(0.02,0.5,num=50)
-print(nu_params)
 
-for j in range (nu_params.shape[0]):
+#lastFrame = data_all[-1,0]
+nu = nu_params = 0.695980
+kernel = 'rbf'
+gamma_params = gamma = 0.2
+gamma_params = gamma = np.linspace(0.01,0.1,num=200)
+
+for j in range (gamma_params.shape[0]):
     # Prepare data
     startFrame = i = 2
     endFrame = lastFrame = 3
@@ -44,6 +47,9 @@ for j in range (nu_params.shape[0]):
         indices = np.squeeze(indices)
         data = np.hstack((np.array(data_all[indices[0]:indices[-1] + 1, 2]).reshape(-1, 1),
                           np.array(data_all[indices[0]:indices[-1] + 1, 3]).reshape(-1, 1)))
+        actualGamma = gamma[j]
+        #actualNu = nu_params[j]
+        actualNu = nu
 
         # Modelling
         # model specification
@@ -51,9 +57,8 @@ for j in range (nu_params.shape[0]):
         # mod = 1
         # model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
         mod = 3
-        kernel = 'rbf'
-        gamma = 0.2
-        model = OneClassSVM(kernel=kernel, gamma=gamma, nu=nu_params[j]).fit(data)
+
+        model = OneClassSVM(kernel=kernel, gamma=actualGamma, nu=actualNu).fit(data)
         # Prediction
         data_prediction = model.predict(data)
 
@@ -65,7 +70,7 @@ for j in range (nu_params.shape[0]):
         outlier_values = np.array(pd.DataFrame(data).iloc[outlier_index])
         plt.clf()
         # np.savetxt("data.csv",outlier_values,delimiter=',')
-        plt.title("Frame: %d\n params kernel:%s, gamma: %f ,nu: %f" %(i,kernel,gamma,nu_params[j]))
+        plt.title("Frame: %d\n params kernel:%s, gamma: %f ,nu: %f" %(i,kernel,actualGamma,actualNu))
         b1 = plt.scatter(data[:, 0], data[:, 1])
         b2 = plt.scatter(outlier_values[:, 0], outlier_values[:, 1], c="r")
         tempArray = np.zeros(outlier_values.shape[0])
@@ -78,9 +83,10 @@ for j in range (nu_params.shape[0]):
         fig = plt.gcf()
         # To vid
         # Save the figure as a PNG image
-        fig.savefig(f"figure_radDat_SVM_AnomalyDet/{fileName}_pic_{j:04d}_{kernel}_gamma {gamma}__nu {nu_params[j]}.png")
+
+        fig.savefig(f"figure_radDat_SVM_AnomalyDet/{fileName}_pic_{j:04d}_{kernel}_gamma {actualGamma}__nu {actualNu}.png")
         # Load the image and write it to the video file
-        img = cv2.imread(f"figure_radDat_SVM_AnomalyDet/{fileName}_pic_{j:04d}_{kernel}_gamma {gamma}__nu {nu_params[j]}.png")
+        img = cv2.imread(f"figure_radDat_SVM_AnomalyDet/{fileName}_pic_{j:04d}_{kernel}_gamma {actualGamma}__nu {actualNu}.png")
         video_writer.write(img)
         endTime = time.process_time()
         print("Current progress: %d/%d - Duration: %.5f" % (focusedFrame, lastFrame, (endTime - startTime)))
