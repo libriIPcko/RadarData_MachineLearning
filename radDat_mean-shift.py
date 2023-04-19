@@ -1,5 +1,8 @@
 import numpy as np
 from sklearn.cluster import MeanShift, estimate_bandwidth
+from sklearn.model_selection import GridSearchCV
+from sklearn import  metrics
+
 #from sklearn.datasets import make_blob
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -9,31 +12,33 @@ import time
 
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_13_xwr18xx_processed_stream_2023_03_17T12_02_36_082.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_25_static_xwr18xx_processed_stream.csv'
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
+path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
-path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
 data = np.genfromtxt(path,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
 focusedFrame = 0
 
 # Create a VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (640, 480))
+vid_fileName = "outputVid"+path.split('/')[-1].split('.')[-2]+".mp4"
+#video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (640, 480))
+video_writer = cv2.VideoWriter(vid_fileName, fourcc, 30, (640, 480))
 
 #selection on focusedFrame data
-indices = np.argwhere(data[:,0] == focusedFrame)
-indices = np.squeeze(indices)
-data_posX_focusedFrame = np.array(data[indices[0]:indices[-1]+1,2])
-data_posY_focusedFrame = np.array(data[indices[0]:indices[-1]+1,3])
-x = data_posX_focusedFrame
-y = data_posY_focusedFrame
-data = np.hstack((x.reshape(-1,1),y.reshape(-1,1)))
-
-lenOfFocusedData = indices[-1]-indices[0]
-print("focData/indic: %d/%d" %(data.shape[0]-1,lenOfFocusedData))
+#indices = np.argwhere(data[:, 0] == focusedFrame)
+#indices = np.squeeze(indices)
+#data_posX_focusedFrame = np.array(data[indices[0]:indices[-1] + 1, 2])
+#data_posY_focusedFrame = np.array(data[indices[0]:indices[-1] + 1, 3])
+#x = data_posX_focusedFrame
+#y = data_posY_focusedFrame
+#data = np.hstack((x.reshape(-1, 1), y.reshape(-1, 1)))
+#print(data)
+#lenOfFocusedData = indices[-1]-indices[0]
+#print("focData/indic: %d/%d" %(data.shape[0]-1,lenOfFocusedData))
 
 lastFrame = data_all[-1,0]
-#lastFrame = 100
+#lastFrame = 10
 images = []
 colors = ["#dede00", "#377eb8", "#a701bf", "#b731bf", "#c761bf", "#d791bf", "#e801bf", "#f881ff"]
 #markers = ['$1$', '$2$', '$3$', '$4$', '$5$', '$6$','$7$', '$8$']
@@ -53,7 +58,8 @@ while(i<lastFrame):
     #***********
     centers = [[1, 1], [-1, -1], [1, -1]]
 
-    bandwidth = estimate_bandwidth(data, quantile=0.2)
+    bandwidth = estimate_bandwidth(data, quantile=0.3)
+    print(bandwidth)
     ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
     ms.fit(data)
     labels = ms.labels_
@@ -61,8 +67,6 @@ while(i<lastFrame):
 
     labels_unique = np.unique(labels)
     n_clusters_ = len(labels_unique)
-
-
 
     plt.clf()
     plt.figure(1)

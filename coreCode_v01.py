@@ -49,6 +49,8 @@ while(i<lastFrame):
     plt.title("Current Frame: %d/%d" %(focusedFrame, lastFrame))
     plt.scatter(data[:, 0], data[:, 1])
 
+
+
     # save the plot as an image
     fig = plt.gcf()
     fig.canvas.draw()
