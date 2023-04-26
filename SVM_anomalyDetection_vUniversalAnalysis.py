@@ -1,7 +1,7 @@
 # import libraries
 import pandas as pd
 from sklearn.svm import OneClassSVM
-import matplotlib.pyplot as plt
+
 from numpy import where
 import numpy as np
 import cv2
@@ -12,6 +12,7 @@ import time
 path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
+path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/statis_measurement_parsed/static_measurement_parsed/mer2.csv'
 data = np.genfromtxt(path,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
 fileName = path[path.rfind('/') + 1:]

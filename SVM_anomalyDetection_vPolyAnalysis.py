@@ -9,9 +9,11 @@ import time
 
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_13_xwr18xx_processed_stream_2023_03_17T12_02_36_082.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_25_static_xwr18xx_processed_stream.csv'
-path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
+path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer3.csv'
+
 data = np.genfromtxt(path,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
 fileName = path[path.rfind('/') + 1:]
@@ -56,7 +58,7 @@ for j in range (poly_params.shape[0]):
 
         # Modelling
         # model specification
-        # model = OneClassSVM(kernel='rbf', gamma=0.001, nu=0.03).fit(data)
+        # model = OneC  lassSVM(kernel='rbf', gamma=0.001, nu=0.03).fit(data)
         # mod = 1
         # model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
         mod = 3
