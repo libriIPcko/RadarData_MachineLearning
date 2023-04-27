@@ -4,22 +4,98 @@ import matplotlib.animation as animation
 from matplotlib.patches import Ellipse, Circle, Rectangle
 import time
 
-path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+#2-11
+measurement = 9
+mirror = False      #mirroring the space
+if measurement == 2:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+    pos_x = 2.5
+    pos_y = 7.8
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 3:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer3.csv'
+    pos_x = 0
+    pos_y = 8.8
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 4:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer4.csv'
+    pos_x = -4.5
+    pos_y = 4.5
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 5:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer5.csv'
+    pos_x = 4
+    pos_y = 5.5
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 6:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer6.csv'
+    pos_x = 0
+    pos_y = 1
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 7:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer7.csv'
+    pos_x = 0
+    pos_y = 2.5
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 8:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer8.csv'
+    pos_x = 3
+    pos_y = 4
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 9:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer9.csv'
+    pos_x = -2
+    pos_y = 3
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 10:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer10.csv'
+    pos_x = 3
+    pos_y = 8.8
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 11:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer11.csv'
+    pos_x = 0
+    pos_y = 5.5
+    if mirror == True:
+        pos_x = pos_x * -1
+
 #path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
 data = np.genfromtxt(path,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
 fileName = path[path.rfind('/') + 1:]
 
-lastFrame = data_all[-1,0]
-#lastFrame = 5
-startFrame = 1
+#lastFrame = data_all[-1,0]
+lastFrame = 50
+startFrame = 0
 #step Frame
 stepFrame = 5
 
+#visualize space:
+'''
+indices = np.argwhere(data_all[:, 0] == startFrame)
+indices = np.squeeze(indices)
+procData = data[indices[0]:indices[-1], :]
+fig0, ax0 = plt.subplots()
+ax0.set_xlim(-6,6)
+ax0.set_ylim(0,9)
+ax0 = plt.scatter(procData[indices[0]:indices[-1], 2],procData[indices[0]:indices[-1], 3])
+plt.show()
+'''
+
+
 #for DetObj radius
 radius = .5
-pos_x = 2.5   #2.5
-pos_y = 8   #8
+pos_x = pos_x #2.5   #2.5
+pos_y = pos_y #8   #8
 
 #for interfere rectangle
 x_length = 3
@@ -34,18 +110,6 @@ pos_x_right_interfere = pos_x_LD + x_length
 pos_x_left_interfere = pos_y_LD
 pos_y_UP_interfere = y_length
 pos_y_DOWN_interfere = 0
-
-print(pos_y_DOWN_interfere)
-print(pos_y_UP_interfere)
-print(pos_x_left_interfere)
-print(pos_x_right_interfere)
-
-
-
-
-mirror = False
-if mirror == True:
-    pos_x = pos_x * -1
 
 outArray = np.empty((0,data.shape[1]+1))
 
@@ -102,7 +166,7 @@ np.savetxt(outFileName, outArray,header=header ,delimiter=',')
 
 
 #test labelization
-'''
+
 dat_lab = outArray
 lastFrame = lastFrame
 
@@ -137,7 +201,7 @@ while (n<=lastFrame):
         fig1.suptitle("frame_%d/%d, detObj_ %d" % (n, lastFrame, obj_counter))
 
         # save the plot as an image
-        fig1.savefig(f"FB_figures/frame_{n}.png")
+        fig1.savefig(f"FB_figures/meas_{measurement}frame_{n}.png")
         ax1.remove()
     n = n + 1
-'''
+

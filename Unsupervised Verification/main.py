@@ -31,6 +31,9 @@ i=0
 lastFrame = 2
 outlineOutArray = np.empty((1,3))
 print(outlineOutArray)
+outArray = np.empty((0,data.shape[1]+1))
+inlier_fedback = np.empty((0,1))
+outlier_feedback = np.empty((0,1))
 #Prepare data
 while(i<lastFrame):
     startTime = time.process_time()
@@ -48,10 +51,17 @@ while(i<lastFrame):
     model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
     #Prediction
     data_prediction = model.predict(data)
-
+    print(data_prediction)
     #Filtering anomalies
     # filter outlier index
+    inlier_index = where(data_prediction != -1)
+    inlier_fedback = np.row_stack(inlier_fedback,inlier_index)
     outlier_index = where(data_prediction == -1)  # filter outlier values
+    outlier_index = np.row_stack(outlier_feedback,outlier_index)
+
+    #outArray = np.row_stack(outArray,outlier_index)
+
+
     #df = pd.DataFrame(data).iloc[outlier_index]
     #outlier_values = df.iloc[outlier_index]
     outlier_values = np.array(pd.DataFrame(data).iloc[outlier_index])
@@ -69,9 +79,9 @@ while(i<lastFrame):
     fig = plt.gcf()
     # To vid
     # Save the figure as a PNG image
-    fig.savefig(f"figure_radDat_SVM/frame_mod_{mod}_{i:04d}.png")
+    fig.savefig(f"img/frame_{i:04d}.png")
     # Load the image and write it to the video file
-    img = cv2.imread(f"figure_radDat_mean_shift/frame_{i:04d}.png")
+    img = cv2.imread(f"img/frame_{i:04d}.png")
     video_writer.write(img)
     endTime = time.process_time()
     print("Current progress: %d/%d - Duration: %.5f" % (focusedFrame, lastFrame, (endTime - startTime)))
@@ -81,4 +91,6 @@ video_writer.release()
 endTime_total = time.process_time()
 print("Total time: %.5f" % (endTime_total - startTime_total))
 np.savetxt('data.csv',outlineOutArray,delimiter=',')
+np.savetxt('outlier.csv',outlier_values,delimiter=',')
+##verification
 
