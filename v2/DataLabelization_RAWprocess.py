@@ -6,16 +6,16 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 3
+measurement = 5
 mirror = False      #mirroring the space
-turnON_rectangleLabelization = True
-turnON_figuredOutput = True
+turnON_rectangleLabelization = False
+turnON_figuredOutput = False
 
 
-startFrame = 10
-finalFrame = 60
+startFrame = 0
+finalFrame = 999         #to the end of Frame is value: 999
 #step Frame
-stepFrame = 10
+stepFrame = 1
 ##########################################
 
 if measurement == 2:
