@@ -7,12 +7,13 @@ import numpy as np
 import cv2
 import time
 
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_13_xwr18xx_processed_stream_2023_03_17T12_02_36_082.csv'
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_32_25_static_xwr18xx_processed_stream.csv'
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_3_static_v2_xwr18xx_processed_stream.csv'
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_39_39_static_v1_xwr18xx_processed_stream.csv'
-#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/ParsedData/parsOut_18.4__11_40_7_dynamic_xwr18xx_processed_stream.csv'
-path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/v2/mer2_LABELIZED.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/v2/mer3_LABELIZED.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/v2/mer4_LABELIZED.csv'
+#path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/v2/mer5_LABELIZED.csv'
+
 
 data = np.genfromtxt(path,delimiter=',',skip_header=1)
 data_all = np.genfromtxt(path,delimiter=',',skip_header=1)
@@ -29,11 +30,22 @@ startTime_total = time.process_time()
 i=0
 #lastFrame = data_all[-1,0]
 lastFrame = 2
+
 outlineOutArray = np.empty((1,3))
 print(outlineOutArray)
 outArray = np.empty((0,data.shape[1]+1))
+
 inlier_fedback = np.empty((0,1))
 outlier_feedback = np.empty((0,1))
+
+print(inlier_fedback.shape[0])
+print(inlier_fedback.shape[1])
+print('----')
+print(outlier_feedback.shape[0])
+print(outlier_feedback.shape[1])
+print('----')
+
+
 #Prepare data
 while(i<lastFrame):
     startTime = time.process_time()
@@ -44,9 +56,6 @@ while(i<lastFrame):
 
     #Modelling
     # model specification
-    #model = OneClassSVM(kernel='rbf', gamma=0.001, nu=0.03).fit(data)
-    #mod = 1
-    #model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
     mod = 3
     model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
     #Prediction
@@ -55,16 +64,19 @@ while(i<lastFrame):
     #Filtering anomalies
     # filter outlier index
     inlier_index = where(data_prediction != -1)
-    inlier_fedback = np.row_stack(inlier_fedback,inlier_index)
     outlier_index = where(data_prediction == -1)  # filter outlier values
-    outlier_index = np.row_stack(outlier_feedback,outlier_index)
 
-    #outArray = np.row_stack(outArray,outlier_index)
+
 
 
     #df = pd.DataFrame(data).iloc[outlier_index]
     #outlier_values = df.iloc[outlier_index]
     outlier_values = np.array(pd.DataFrame(data).iloc[outlier_index])
+    inlier_index = np.array(pd.DataFrame(data).iloc[inlier_index])
+
+
+
+
     plt.clf()
     #np.savetxt("data.csv",outlier_values,delimiter=',')
     b1 = plt.scatter(data[:,0], data[:,1])
@@ -90,7 +102,9 @@ while(i<lastFrame):
 video_writer.release()
 endTime_total = time.process_time()
 print("Total time: %.5f" % (endTime_total - startTime_total))
-np.savetxt('data.csv',outlineOutArray,delimiter=',')
-np.savetxt('outlier.csv',outlier_values,delimiter=',')
+
+np.savetxt(f"mer2/outlineOutArrat.csv",outlineOutArray,delimiter=',')
+np.savetxt(f"mer2/outlier_values.csv",outlier_values,delimiter=',')
+
 ##verification
 
