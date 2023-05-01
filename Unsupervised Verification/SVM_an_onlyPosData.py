@@ -74,7 +74,7 @@ while (i < lastFrame):
     a = np.empty((0,9))
     a1 = np.empty((0, 9))
     while c < inlier_values.shape[0]:
-        a2 = np.where(np.logical_and((data_all[indices[0]:indices[-1] + 1, 2] == inlier_values[c, 0]) , (data_all[indices[0]:indices[-1] + 1, 3] == inlier_values[c, 1])))
+        a2 = np.where(np.logical_and((data_all[indices[0]+frameOffset:indices[-1]+frameOffset + 1, 2] == inlier_values[c, 0]) , (data_all[indices[0]+frameOffset:indices[-1]+frameOffset + 1, 3] == inlier_values[c, 1])))
         a1 = data_all[a2[0]]
         a = np.row_stack((a,a1))
         c = c + 1
@@ -85,12 +85,12 @@ while (i < lastFrame):
     sorted_indices_1 = np.argsort(a[:,1])[::1]
     sorted_arr_1 = a[sorted_indices_1,:]
     unique_arr_1 = np.unique(sorted_arr_1,axis=0)
-
+    unique_arr_1[:,0] = np.full((unique_arr_1.shape[0],), focusedFrame)
     c = 0
     a = np.empty((0, 9))
     a1 = np.empty((0, 9))
     while c < outlier_values.shape[0]:
-        a2 = where(np.logical_and((data_all[indices[0]:indices[-1] + 1, 2] == outlier_values[c, 0]) , (data_all[indices[0]:indices[-1] + 1, 3] == outlier_values[c, 1])))
+        a2 = where(np.logical_and((data_all[indices[0]+frameOffset:indices[-1]+frameOffset + 1, 2] == outlier_values[c, 0]) , (data_all[indices[0]+frameOffset:indices[-1]+frameOffset + 1, 3] == outlier_values[c, 1])))
         a1 = data_all[a2[0]]
         a = np.row_stack((a,a1))
         c = c + 1
@@ -100,8 +100,10 @@ while (i < lastFrame):
     sorted_indices_2 = np.argsort(a[:,1])[::1]
     sorted_arr_2 = a[sorted_indices_2,:]
     unique_arr_2 = np.unique(sorted_arr_2,axis=0)
+    unique_arr_2[:,0] = np.full((unique_arr_2.shape[0],),focusedFrame)
     #data_result_frame = np.row_stack((unique_arr_1,unique_arr_2))
     data_result = np.row_stack((data_result,np.row_stack((unique_arr_1,unique_arr_2))))
+    frameOffset = indices[-1]
     print("\nframe: %d" % i)
     print("total processed length: %d" % (inlier_values.shape[0] + outlier_values.shape[0]))
     print("length of frame data: %d" % data.shape[0])
