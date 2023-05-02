@@ -28,8 +28,8 @@ video_writer = cv2.VideoWriter(vid_fileName, fourcc, 30, (640, 480))
 
 startTime_total = time.process_time()
 i = 0
-# lastFrame = data_all[-1,0]
-lastFrame = 10
+lastFrame = data_all[-1,0]
+#lastFrame = 10
 
 inlier_fedback = np.empty((0, 1))
 outlier_feedback = np.empty((0, 1))
@@ -102,18 +102,24 @@ while (i < lastFrame):
     unique_arr_2 = np.unique(sorted_arr_2,axis=0)
     unique_arr_2[:,0] = np.full((unique_arr_2.shape[0],),focusedFrame)
     #data_result_frame = np.row_stack((unique_arr_1,unique_arr_2))
-    data_result = np.row_stack((data_result,np.row_stack((unique_arr_1,unique_arr_2))))
+    data_result_frame = np.row_stack((unique_arr_1,unique_arr_2))
+    sort_data_result_frame = np.argsort(data_result_frame[:,1])[::1]
+    data_result_frame = data_result_frame[sort_data_result_frame, :]
+    data_result = np.row_stack((data_result, data_result_frame))
+
+    #data_result = np.row_stack((data_result,np.row_stack((unique_arr_1,unique_arr_2))))
+
+
     frameOffset = indices[-1]
     print("\nframe: %d" % i)
     print("total processed length: %d" % (inlier_values.shape[0] + outlier_values.shape[0]))
     print("length of frame data: %d" % data.shape[0])
 
     plt.clf()
-    #b1 = plt.scatter(data[:, 0], data[:, 1])
-    #b2 = plt.scatter(outlier_values[:, 0], outlier_values[:, 1], c="r")
-    b1 = plt.scatter(unique_arr_1[:,2],unique_arr_1[:,3])           #inlier
-    b2 = plt.scatter(unique_arr_2[:, 2], unique_arr_2[:, 3],c='red')        #outlier
-
+            #b1 = plt.scatter(data[:, 0], data[:, 1])
+            #b2 = plt.scatter(outlier_values[:, 0], outlier_values[:, 1], c="r")
+    #b1 = plt.scatter(unique_arr_1[:,2],unique_arr_1[:,3])           #inlier
+    #b2 = plt.scatter(unique_arr_2[:, 2], unique_arr_2[:, 3],c='red')        #outlier
 
     # save the plot as an image
     fig = plt.gcf()
@@ -135,3 +141,35 @@ header = "frame, detObj, x,y,z,v,snr,noise,label,inlier"
 np.savetxt('merge.csv', data_result, delimiter=',', header=header)
 
 ##verification
+print("\tPhase of verification")
+
+    #True positive  -- TP
+    #True negative  -- TN
+    #False positive -- FP
+    #False negative -- FN
+# label == 1 real object
+# label == 0 all other
+# inlier == true - set as anomaly
+# inlier == false -
+n = 0
+TN = 0
+TP = 0
+FP = 0
+FN = 0
+while n < data_result.shape[0]:
+    if (data_result[n,9] == data_result[n,8] and data_result[n,9] == 1):           # True positive
+        TP = TP + 1
+    elif (data_result[n,9] == data_result[n,8] and data_result[n,9] == 0):         # True negative
+        TN = TN + 1
+    elif (data_result[n,9] != data_result[n,8] and data_result[n,9] == 1):        # False positive
+        FP = FP +1
+    elif (data_result[n,9] != data_result[n,8] and data_result[n,9] == 0):        # False positive
+        FN = FN +1
+    n = n + 1
+
+print("True positive:  %d" %TP )
+print("True negative:  %d" %TN )
+print("False positive: %d" %FP )
+print("False negative: %d" %FN )
+
+
