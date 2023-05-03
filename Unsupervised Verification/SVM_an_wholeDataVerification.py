@@ -27,8 +27,8 @@ video_writer = cv2.VideoWriter(vid_fileName, fourcc, 30, (640, 480))
 
 startTime_total = time.process_time()
 i = 0
-# lastFrame = data_all[-1,0]
-lastFrame = 10
+lastFrame = data_all[-1,0]
+#lastFrame = 10
 
 inlier_fedback = np.empty((0, 1))
 outlier_feedback = np.empty((0, 1))
@@ -74,10 +74,8 @@ while (i < lastFrame):
     print("length of frame data: %d" % data.shape[0])
 
     plt.clf()
-    # np.savetxt("data.csv",outlier_values,delimiter=',')
-    # b1 = plt.scatter(data[:,0], data[:,1])
+
     b1 = plt.scatter(data[:, 2], data[:, 3])
-    # b2 = plt.scatter(outlier_values[:,0], outlier_values[:,1], c="r")
     b2 = plt.scatter(outlier_values[:, 2], outlier_values[:, 3], c="r")
     '''
     tempArray = np.zeros(outlier_values.shape[0])
@@ -108,3 +106,23 @@ header = "frame, detObj, x,y,z,v,snr,noise,label,inlier"
 np.savetxt('merge.csv', data_out, delimiter=',', header=header)
 
 ##verification
+n = 0
+TN = 0
+TP = 0
+FP = 0
+FN = 0
+while n < data_out.shape[0]:
+    if (data_out[n,9] == data_out[n,8] and data_out[n,9] == 1):           # True positive
+        TP = TP + 1
+    elif (data_out[n,9] == data_out[n,8] and data_out[n,9] == 0):         # True negative
+        TN = TN + 1
+    elif (data_out[n,9] != data_out[n,8] and data_out[n,9] == 1):        # False positive
+        FP = FP +1
+    elif (data_out[n,9] != data_out[n,8] and data_out[n,9] == 0):        # False positive
+        FN = FN +1
+    n = n + 1
+
+print("True positive:  %d" %TP )
+print("True negative:  %d" %TN )
+print("False positive: %d" %FP )
+print("False negative: %d" %FN )
