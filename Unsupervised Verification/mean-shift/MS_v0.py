@@ -38,8 +38,8 @@ video_writer = cv2.VideoWriter(vid_fileName, fourcc, 30, (640, 480))
 #lenOfFocusedData = indices[-1]-indices[0]
 #print("focData/indic: %d/%d" %(data.shape[0]-1,lenOfFocusedData))
 
-#lastFrame = data_all[-1,0]
-lastFrame = 2
+lastFrame = data_all[-1,0]
+#lastFrame = 2
 startFrame = 0
 #lastFrame = 10
 images = []
@@ -105,7 +105,7 @@ while(i<lastFrame):
 
     #To vid
     # Save the figure as a PNG image
-    fig.savefig(f"figure_MS/frame_{i:04d}.png")
+    #fig.savefig(f"figure_MS/frame_{i:04d}.png")
     # Load the image and write it to the video file
     #img = cv2.imread(f"figure_radDat_mean_shift/frame_{i:04d}.png")
     #video_writer.write(img)
@@ -140,3 +140,26 @@ print("Total time: %.5f" %(endTime_total-startTime_total))
 
 header = "frame,detObj,posX,poxY,posZ,v,snr,noise,label,cluster"
 np.savetxt('dataFrame.csv',data_frame,delimiter=',',header=header)
+
+
+#Verification:
+n = 0
+TN = 0
+TP = 0
+FP = 0
+FN = 0
+while n < data_frame.shape[0]:
+    if (data_frame[n,9] == data_frame[n,8] and data_frame[n,9] == 1):           # True positive
+        TP = TP + 1
+    elif (data_frame[n,9] == data_frame[n,8] and data_frame[n,9] == 0):         # True negative
+        TN = TN + 1
+    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,9] == 1):        # False positive
+        FP = FP +1
+    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,9] == 0):        # False positive
+        FN = FN +1
+    n = n + 1
+
+print("True positive:  %d" %TP )
+print("True negative:  %d" %TN )
+print("False positive: %d" %FP )
+print("False negative: %d" %FN )
