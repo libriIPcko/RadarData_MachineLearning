@@ -8,12 +8,12 @@ import time
 #2-11
 measurement = 5
 mirror = False      #mirroring the space
-turnON_rectangleLabelization = False
-turnON_figuredOutput = False
+turnON_rectangleLabelization = True
+turnON_figuredOutput = True
 
 
 startFrame = 0
-finalFrame = 999         #to the end of Frame is value: 999
+finalFrame = 10         #to the end of Frame is value: 999
 #step Frame
 stepFrame = 1
 ##########################################
@@ -111,7 +111,7 @@ pos_y = pos_y #8   #8
 
 #for interfere rectangle
 x_length = 3
-y_length = 1
+y_length = 1.5
 pos_x_center_interfere = 0
 pos_y_center_interfere = 0
 

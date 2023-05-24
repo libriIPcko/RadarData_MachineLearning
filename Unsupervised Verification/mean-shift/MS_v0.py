@@ -105,9 +105,10 @@ while(i<lastFrame):
 
     #To vid
     # Save the figure as a PNG image
-    #fig.savefig(f"figure_MS/frame_{i:04d}.png")
+    fig.savefig(f"figure_MS/frame_{i:04d}.png")
     # Load the image and write it to the video file
     #img = cv2.imread(f"figure_radDat_mean_shift/frame_{i:04d}.png")
+    img = cv2.imread(f"figure_MS/frame_{i:04d}.png")
     #video_writer.write(img)
 
     marker_frame = np.full((a.shape[0],),focusedFrame)
