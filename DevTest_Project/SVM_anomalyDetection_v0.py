@@ -10,14 +10,14 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 10
+measurement = 11
 mirror = False      #mirroring the space
 turnON_rectangleLabelization = True
 turnON_figuredOutput = True
 
 
-startFrame = 0
-finalFrame = 50         #to the end of Frame is value: 999
+startFrame = 10
+finalFrame = 11       #to the end of Frame is value: 999
 #step Frame
 #stepFrame = 1
 ##########################################
@@ -72,14 +72,14 @@ elif measurement == 9:
         pos_x = pos_x * -1
 elif measurement == 10:
     path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer10.csv'
-    pos_x = 3
+    pos_x = 0
     pos_y = 8.8
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 11:
     path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer11.csv'
     pos_x = 0
-    pos_y = 5.5
+    pos_y = 8
     if mirror == True:
         pos_x = pos_x * -1
 
