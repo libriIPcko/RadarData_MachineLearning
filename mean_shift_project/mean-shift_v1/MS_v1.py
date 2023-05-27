@@ -24,57 +24,57 @@ finalFrame = 999        #to the end of Frame is value: 999
 #step Frame
 stepFrame = 1
 ##########################################
-path_outputLABELfile = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/'
+path_outputLABELfile = f'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/mean_shift_project/mean-shift_v1/VisualizationOutputs/m{measurement}'
 if measurement == 1:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer1.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer1_LABELIZED.csv'
     pos_x = 0
     pos_y = 8
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 2:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer2_LABELIZED.csv'
     pos_x = 2.5
     pos_y = 7.8
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 3:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer3.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer3_LABELIZED.csv'
     pos_x = -4.5
     pos_y = 4.5
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 4:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer4.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer4_LABELIZED.csv'
     pos_x = 4
     pos_y = 5.5
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 5:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer5.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer5_LABELIZED.csv'
     pos_x = 0
     pos_y = 1
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 6:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer6.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer6_LABELIZED.csv'
     pos_x = 0
     pos_y = 2.5
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 7:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer7.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer7_LABELIZED.csv'
     pos_x = 3
     pos_y = 4
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 8:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer8.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer8_LABELIZED.csv'
     pos_x = -2
     pos_y = 3
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 9:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer9.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer9_LABELIZED.csv'
     pos_x = 0
     pos_y = 8.8
     if mirror == True:
@@ -87,7 +87,8 @@ focusedFrame = 0
 
 # Create a VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-vid_fileName = "outputVid"+path.split('/')[-1].split('.')[-2]+".mp4"
+vid_fileName = f"mean-shift_v1/visualizedOutput_mean-shift_v1/m{measurement}"+path.split('/')[-1].split('.')[-2]+".mp4"
+#mean-shift_v1\visualizedOutput_mean-shift_v1\m1
 #video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (640, 480))
 video_writer = cv2.VideoWriter(vid_fileName, fourcc, 30, (640, 480))
 
@@ -133,9 +134,9 @@ while(i<lastFrame):
     #***********
     centers = [[1, 1], [-1, -1], [1, -1]]
 
-    bandwidth = estimate_bandwidth(data, quantile=0.3)
-    print(bandwidth)
-    ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+    bandwidth = estimate_bandwidth(data, quantile=0.2)
+    ms = MeanShift(bandwidth=bandwidth)
+
     ms.fit(data)
     labels = ms.labels_
     cluster_centers = ms.cluster_centers_
@@ -175,10 +176,10 @@ while(i<lastFrame):
 
     #To vid
     # Save the figure as a PNG image
-    fig.savefig(f"VisualizationOutputs/m{measurement}/frame_{i:04d}.png")
+    fig.savefig(f"visualizedOutput_mean-shift_v1/m{measurement}/frame_{i:04d}.png")
     # Load the image and write it to the video file
     #img = cv2.imread(f"figure_radDat_mean_shift/frame_{i:04d}.png")
-    img = cv2.imread(f"VisualizationOutputs/m{measurement}/frame_{i:04d}.png")
+    img = cv2.imread(f"visualizedOutput_mean-shift_v1/m{measurement}/frame_{i:04d}.png")
     #video_writer.write(img)
 
     marker_frame = np.full((a.shape[0],),focusedFrame)
@@ -217,13 +218,13 @@ TP = 0
 FP = 0
 FN = 0
 while n < data_frame.shape[0]:
-    if (data_frame[n,9] == data_frame[n,8] and data_frame[n,9] == 1):           # True positive
+    if (data_frame[n,9] == data_frame[n,8] and (data_frame[n,8] == 1 or data_frame[n,8] == 1)):           # True positive
         TP = TP + 1
-    elif (data_frame[n,9] == data_frame[n,8] and data_frame[n,9] == 0):         # True negative
+    elif (data_frame[n,9] == data_frame[n,8] and (data_frame[n,8] == 2 or data_frame[n,8] == 3)):         # True negative
         TN = TN + 1
-    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,9] == 1):        # False positive
+    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,8] == 1):        # False positive
         FP = FP +1
-    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,9] == 0):        # False positive
+    elif (data_frame[n,9] != data_frame[n,8] and (data_frame[n,8] == 2 or data_frame[n,8] == 3)):        # False positive
         FN = FN +1
     n = n + 1
 
@@ -231,3 +232,6 @@ print("True positive:  %d" %TP )
 print("True negative:  %d" %TN )
 print("False positive: %d" %FP )
 print("False negative: %d" %FN )
+verSub = TP + TN + FP + FN
+print(str(verSub) + "/" + str(data_frame.shape[0]))
+print(str(data_frame.shape[0]-verSub))
