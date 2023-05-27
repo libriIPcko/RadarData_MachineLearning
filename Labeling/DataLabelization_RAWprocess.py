@@ -12,7 +12,7 @@ turnON_rectangleLabelization = True
 turnON_figuredOutput = True
 
 
-startFrame = 0
+startFrame = 1
 finalFrame = 999         #to the end of Frame is value: 999
 #step Frame
 stepFrame = 1
@@ -140,6 +140,7 @@ while(i <= lastFrame):
         j = 0
         objColumn = np.zeros((indices[-1] - indices[0], 1))
         startTime_total = time.process_time()
+
         while (j < (indices[-1] - indices[0])):
             # Define column
             # objColumn = np.empty((indices[-1] - indices[0], 1))
@@ -154,10 +155,13 @@ while(i <= lastFrame):
             elif (data_x < pos_x_LD+x_length and data_x > pos_x_LD and data_y < pos_y_UP_interfere and turnON_rectangleLabelization == True):
                 objColumn[j, 0] = 3
                 ax.scatter(data_x, data_y, c='#ffbecf', marker='^')
+
             else:
                 objColumn[j, 0] = 0
                 ax.scatter(data_x, data_y, c='#1f77b4')
+
             j = j + 1
+
         result = np.column_stack((data[indices[0]:indices[-1], :], objColumn))
         # outArray = np.row_stack(outArray,result)
         outArray = np.row_stack((outArray, result))
@@ -205,10 +209,9 @@ if(turnON_figuredOutput == True):
                     ax1.scatter(dat_lab[obj, 2], dat_lab[obj, 3], c='black')
                 obj = obj + 1
             fig1.suptitle("frame: %d/%d of measure: %d, \ndetObj: %d" % (n, lastFrame,measurement, obj_counter))
-
             # save the plot as an image
             fig1.savefig(f"graphicalOutputs/m{measurement}/meas_{measurement}frame_{n}.png")
             ax1.remove()
         n = n + 1
 
-
+print(manyObj)
