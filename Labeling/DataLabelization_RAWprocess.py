@@ -6,14 +6,14 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 5
+measurement = 9
 mirror = False      #mirroring the space
 turnON_rectangleLabelization = True
 turnON_figuredOutput = True
 
 
-startFrame = 10
-finalFrame = 10         #to the end of Frame is value: 999
+startFrame = 0
+finalFrame = 999         #to the end of Frame is value: 999
 #step Frame
 stepFrame = 1
 ##########################################
@@ -135,7 +135,7 @@ while(i <= lastFrame):
         indices = np.argwhere(data_all[:, 0] == focusedFrame)
         indices = np.squeeze(indices)
         procData = data[indices[0]:indices[-1], :]
-        np.savetxt('test_out_0.csv', procData, delimiter=',')
+        #np.savetxt('test_out_0.csv', procData, delimiter=',')
         manyObj = 0
         j = 0
         objColumn = np.zeros((indices[-1] - indices[0], 1))
@@ -166,7 +166,7 @@ while(i <= lastFrame):
     i = i + 1
 
 header = 'frame,DetObj#,x,y,z,v,snr,noise,label'
-'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+# defined above: outFileName  = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
 outFileName = path.split('/')[-1].split('.')[-2] + "_LABELIZED.csv"
 np.savetxt(f"{path_outputLABELfile}"+"/"+f"{outFileName}", outArray,header=header ,delimiter=',')
 
@@ -207,7 +207,7 @@ if(turnON_figuredOutput == True):
             fig1.suptitle("frame: %d/%d of measure: %d, \ndetObj: %d" % (n, lastFrame,measurement, obj_counter))
 
             # save the plot as an image
-            fig1.savefig(f"FB_figures/meas_{measurement}frame_{n}.png")
+            fig1.savefig(f"graphicalOutputs/m{measurement}/meas_{measurement}frame_{n}.png")
             ax1.remove()
         n = n + 1
 
