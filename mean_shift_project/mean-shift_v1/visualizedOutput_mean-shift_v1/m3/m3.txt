@@ -1,0 +1,10 @@
+Total time: 21.73438
+True positive:  693
+True negative:  0
+False positive: 0
+False negative: 10099
+Precision:1.0
+Recall:0.06421423276501112
+F1_score:0.12067914671310406
+90
+Total status: 10792/10882

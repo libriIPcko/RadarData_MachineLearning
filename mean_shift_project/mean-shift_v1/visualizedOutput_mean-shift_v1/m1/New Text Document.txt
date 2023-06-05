@@ -1,0 +1,12 @@
+Total time: 26.79688
+True positive:  718
+True negative:  0
+False positive: 123
+False negative: 12639
+Precision:0.8537455410225921
+Recall:0.05375458561054129
+F1_score:0.10114100577546134
+472
+Total status: 13480/13952
+
+Process finished with exit code 0

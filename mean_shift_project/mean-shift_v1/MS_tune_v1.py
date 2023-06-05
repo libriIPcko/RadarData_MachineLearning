@@ -13,13 +13,14 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 3
+measurement = 2
 mirror = False      #mirroring the space
 turnON_rectangleLabelization = True
 turnON_figuredOutput = True
 
-quantile = np.linspace(0.2,0.8,num=4)
-focusedFrame =6
+quantile = np.linspace(0.17,0.4,num=30)
+
+focusedFrame = 41
 startFrame = focusedFrame
 finalFrame = focusedFrame+1        #to the end of Frame is value: 999
 
@@ -129,7 +130,7 @@ for j in range (quantile.shape[0]):
         centers = [[1, 1], [-1, -1], [1, -1]]
         print(quantile[j])
         bandwidth = estimate_bandwidth(data, quantile=quantile[j])
-        print(bandwidth)
+        print("bandiwdth: %f", bandwidth)
         ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
         ms.fit(data)
         labels = ms.labels_
@@ -163,8 +164,9 @@ for j in range (quantile.shape[0]):
         # ***********
         # save the plot as an image
         fig = plt.gcf()
-        plt.title("number of estimated clusters : %d \n in frame: %d " % (n_clusters_, focusedFrame))
-        fig.savefig(f"visualizedOutput_mean-shift_v1/m{measurement}/frame_{i:04d}_quantile_{quantile[j]}.png")
+        plt.title("number of estimated clusters : %d \n in frame: %d  quantile: %f estBandwidth: %f" % (n_clusters_, focusedFrame, quantile[j], bandwidth))
+        #fig.savefig(f"visualizedOutput_mean-shift_v1/m{measurement}/frame_{i:04d}_quantile_{quantile[j]}.png")
+        fig.savefig(f"visualizedOutput_mean-shift_v1/{j}_count_frame_{i:04d}_quantile_{quantile[j]}.png")
         marker_frame = np.full((a.shape[0],), focusedFrame)
         sorted_indices_1 = np.argsort(a[:, 0])[::1]  # sorting by posX
         sorted_arr_1 = a[sorted_indices_1, :]
