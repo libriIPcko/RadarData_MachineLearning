@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 import time
 
-measurement = 2
+measurement = 5
 mirror = False
 frame_for_Analysation = 41
 

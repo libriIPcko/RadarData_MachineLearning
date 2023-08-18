@@ -7,74 +7,68 @@ import numpy as np
 import cv2
 import time
 
-measurement = 2
+measurement = 9
+
 mirror = False
 frame_for_Analysation = 41
 
 kernel = 'sigmoid'
 gamma = 0.2 #only for rbf
 coef = 0.5 #only for sigmoid
-nu_params = np.linspace(0.03,1,num=10)
+nu_params = np.linspace(0.02,1,num=50)
 print(nu_params)
-
-if measurement == 2:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+if measurement == 1:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer1_LABELIZED.csv'
+    pos_x = 0
+    pos_y = 8
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 2:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer2_LABELIZED.csv'
     pos_x = 2.5
     pos_y = 7.8
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 3:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer3.csv'
-    pos_x = 0
-    pos_y = 8.8
-    if mirror == True:
-        pos_x = pos_x * -1
-elif measurement == 4:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer4.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer3_LABELIZED.csv'
     pos_x = -4.5
     pos_y = 4.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 5:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer5.csv'
+elif measurement == 4:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer4_LABELIZED.csv'
     pos_x = 4
     pos_y = 5.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 6:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer6.csv'
+elif measurement == 5:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer5_LABELIZED.csv'
     pos_x = 0
     pos_y = 1
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 7:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer7.csv'
+elif measurement == 6:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer6_LABELIZED.csv'
     pos_x = 0
     pos_y = 2.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 8:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer8.csv'
+elif measurement == 7:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer7_LABELIZED.csv'
     pos_x = 3
     pos_y = 4
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 9:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer9.csv'
+elif measurement == 8:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer8_LABELIZED.csv'
     pos_x = -2
     pos_y = 3
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 10:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer10.csv'
-    pos_x = 3
-    pos_y = 8.8
-    if mirror == True:
-        pos_x = pos_x * -1
-elif measurement == 11:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer11.csv'
+elif measurement == 9:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer9_LABELIZED.csv'
     pos_x = 0
-    pos_y = 5.5
+    pos_y = 8.8
     if mirror == True:
         pos_x = pos_x * -1
 

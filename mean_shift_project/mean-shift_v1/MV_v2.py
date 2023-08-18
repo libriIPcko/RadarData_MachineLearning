@@ -13,7 +13,7 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 9
+measurement = 5
 mirror = False      #mirroring the space
 turnON_rectangleLabelization = True
 turnON_figuredOutput = True
@@ -220,23 +220,20 @@ FP = 0
 FN = 0
 x = 0
 while n < data_frame.shape[0]:
-    if (data_frame[n,9] == data_frame[n,8] and (data_frame[n,9] == 1 or data_frame[n,9] == 1)):           # True positive
-        TP = TP + 1
-    elif (data_frame[n,9] == data_frame[n,8] and (data_frame[n,8] == 2 or data_frame[n,8] == 3)):         # True negative
-        TN = TN + 1
-    elif (data_frame[n,9] != data_frame[n,8] and data_frame[n,8] == 1):        # False positive
-        if (data_frame[n, 8] == 0):
-            x = x + 1
+    if (data_frame[n,9] == data_frame[n,8]):           # True positive
+        if(data_frame[n,8] == 1):
+            TN = TN + 1
         else:
+            FP = FP + 1
+    elif (data_frame[n,9] != data_frame[n,8]):        # False positive
+        if(data_frame[n,8] == 3 and data_frame[n,9] == 0):
+            TP = TP + 1
+        elif(data_frame[n,9] == 0):
             FP = FP +1
-    elif (data_frame[n,9] != data_frame[n,8] and (data_frame[n,8] == 2 or data_frame[n,8] == 3)):        # False positive
-        if (data_frame[n, 8] == 0):
-            x = x + 1
-        else:
+        elif (data_frame[n, 9] == 1):
             FN = FN +1
-
     n = n + 1
-
+print("measurement: %s" %measurement)
 print("True positive:  %d" %TP )
 print("True negative:  %d" %TN )
 print("False positive: %d" %FP )

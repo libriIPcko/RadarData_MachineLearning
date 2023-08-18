@@ -10,16 +10,15 @@ import time
 #############################################
 #               INIT PARAMETERS
 #2-11
-measurement = 9
+measurement = 8
 mirror = False      #mirroring the space
 turnON_rectangleLabelization = True
 turnON_figuredOutput = True
 
 kernel = 'sigmoid'
-
-gamma = 0.2
+gamma = 0
 nu = 0.8
-coef = 0.96
+coef = 0.02
 
 
 startFrame = 0
@@ -28,64 +27,58 @@ finalFrame = 999       #to the end of Frame is value: 999
 #stepFrame = 1
 ##########################################
 
-if measurement == 2:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer2.csv'
+if measurement == 1:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer1_LABELIZED.csv'
+    pos_x = 0
+    pos_y = 8
+    if mirror == True:
+        pos_x = pos_x * -1
+elif measurement == 2:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer2_LABELIZED.csv'
     pos_x = 2.5
     pos_y = 7.8
     if mirror == True:
         pos_x = pos_x * -1
 elif measurement == 3:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer3.csv'
-    pos_x = 0
-    pos_y = 8.8
-    if mirror == True:
-        pos_x = pos_x * -1
-elif measurement == 4:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer4.csv'
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer3_LABELIZED.csv'
     pos_x = -4.5
     pos_y = 4.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 5:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer5.csv'
+elif measurement == 4:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer4_LABELIZED.csv'
     pos_x = 4
     pos_y = 5.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 6:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer6.csv'
+elif measurement == 5:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer5_LABELIZED.csv'
     pos_x = 0
     pos_y = 1
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 7:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer7.csv'
+elif measurement == 6:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer6_LABELIZED.csv'
     pos_x = 0
     pos_y = 2.5
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 8:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer8.csv'
+elif measurement == 7:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer7_LABELIZED.csv'
     pos_x = 3
     pos_y = 4
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 9:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer9.csv'
+elif measurement == 8:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer8_LABELIZED.csv'
     pos_x = -2
     pos_y = 3
     if mirror == True:
         pos_x = pos_x * -1
-elif measurement == 10:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer10.csv'
+elif measurement == 9:
+    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_labelized/mer9_LABELIZED.csv'
     pos_x = 0
     pos_y = 8.8
-    if mirror == True:
-        pos_x = pos_x * -1
-elif measurement == 11:
-    path = 'C:/Users/bob/Documents/GitHub/RadarData_MachineLearning/RadarData_MachineLearning/Datasets/static_measurement_parsed/mer11.csv'
-    pos_x = 0
-    pos_y = 8
     if mirror == True:
         pos_x = pos_x * -1
 
@@ -127,7 +120,7 @@ while(i<lastFrame):
     #mod = 1
     #model = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.5).fit(data)
 
-    model = OneClassSVM(kernel=kernel, gamma=gamma, nu=nu, coef0=coef).fit(data)
+    model = OneClassSVM(kernel=kernel, nu=nu, coef0=coef).fit(data)
     #Prediction
     data_prediction = model.predict(data)
 
@@ -153,11 +146,12 @@ while(i<lastFrame):
     plt.xlim(-6,6)
     # To vid
     # Save the figure as a PNG image
-    plt.title("kernel:  %s,gamma: %f,nu:  %f" %(kernel, gamma, nu))
-    fig.savefig(f"SVM_an_v0/meas{measurement}_frame_{i:04d}.png")
+    plt.title("kernel:  %s, coef0: %f, nu:  %f\nframe: %d" %(kernel, coef, nu, focusedFrame))
+    #plt.title("measurement: %d, frame: %d" % (measurement,focusedFrame))
+    fig.savefig(f"SVM_an_v0/m{measurement}/meas{measurement}_frame_{i:04d}.png")
     # Load the image and write it to the video file
     #img = cv2.imread(f"SVM_an_v0/frame_{i:04d}.png")
-    img = cv2.imread(f"SVM_an_v0/meas{measurement}_frame_{i:04d}.png")
+    img = cv2.imread(f"SVM_an_v0/m{measurement}/meas{measurement}_frame_{i:04d}.png")
     video_writer.write(img)
     endTime = time.process_time()
     print("Current progress: %d/%d - Duration: %.5f" % (focusedFrame, lastFrame, (endTime - startTime)))
