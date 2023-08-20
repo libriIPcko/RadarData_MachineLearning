@@ -1,94 +1,135 @@
 import numpy as np
 import os
 class Datasets:
-    path = None
+    scriptPath = None
     measurement = None
     pos_x = None
     pos_y = None
     data = None
+
+    frame = 0
+    detObj = 1
+    x = 2
+    y = 3
+    z = 4
+    v = 5
+    snr = 6
+    noise = 7
+    label = 8
+
     def __init__(self):
-        self.scriptPath = os.path.abspath(__file__)
+        self.scriptPath = os.getcwd()
         self.datasetsPath_Labelized = self.FindDatasetsPath_Labelized()
         self.datasetsPath_NonLabelized = self.FindDatasetsPath_NonLabelized()
-        self.path_labelized_m1 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[0])
-        self.m1_pos_x = 0
-        self.m1_pos_y = 8
-        self.path_labelized_m2 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[1])
-        self.m2_pos_x = 2.5
-        self.m2_pos_y = 7.8
-        self.path_labelized_m3 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[2])
-        self.m3_pos_x = -4.5
-        self.m3_pos_y = 4.5
-        self.path_labelized_m4 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[3])
-        self.m4_pos_x = 4
-        self.m4_pos_y = 5.5
-        self.path_labelized_m5 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[4])
-        self.m5_pos_x = 0
-        self.m5_pos_y = 1
-        self.path_labelized_m6 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[5])
-        self.m6_pos_x = 0
-        self.m6_pos_y = 2.5
-        self.path_labelized_m7 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[6])
-        self.m7_pos_x = 3
-        self.m7_pos_y = 4
-        self.path_labelized_m8 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[7])
-        self.m8_pos_x = -2
-        self.m8_pos_y = 3
-        self.path_labelized_m9 = os.path.join(os.getcwd(), os.listdir(os.getcwd())[8])
-        self.m9_pos_x = 0
-        self.m9_pos_y = 8.8
-
+        self.listLabMeas = self.getArrayOfPathMeasurement_Labelized()
+        self.listNonLabMeas = self.getArrayOfPathMeasurement_NonLabelized()
+    def find_directory(self,start_dir, target_dir):
+        for root, dirs, files in os.walk(start_dir):
+            if target_dir in dirs:
+                return os.path.join(root, target_dir)
+        return None
+    def find_directory_in_system(self,target_dir):
+        # possible_roots = [os.path.abspath("/")]  # You can add more roots if needed
+        mainDir_root = ""
+        abc = ""
+        os.chdir(self.scriptPath)
+        n = 0               #how many times can go above project directory
+        while n < 5:
+            os.chdir("..")
+            content = os.listdir(os.getcwd())
+            m = 0
+            while m < len(content):
+                if content[m].find("RadarData_MachineLearning") != -1:
+                    mainDir_root = os.getcwd()
+                    n = 5
+                m += 1
+            n += 1
+        #print(os.getcwd())
+        possible_roots = [mainDir_root]  # You can add more roots if needed
+        for root in possible_roots:
+            found_path = self.find_directory(root, target_dir)  # Provide both start_dir and target_dir
+            if found_path:
+                #print("First shot")
+                return found_path
+            else:
+                return None
     def FindDatasetsPath_NonLabelized(self):
-        os.chdir("..")
-        contens = os.listdir(os.getcwd())
-        idx = 0
-        while idx < len(contens):
-            if contens[idx].find("static_measurement_parsed"):
-                idx = len(contens)
-                os.chdir(os.path.join(os.getcwd(), "static_measurement_parsed"))
-            idx += 1
-        return  os.getcwd()
-
+            #OLD VERSION OF SEEKING DESIRED DIRECTORY
+        # os.chdir("..")
+        # contens = os.listdir(os.getcwd())
+        # idx = 0
+        # found = False
+        # while idx < len(contens):
+        #     if contens[idx].find("static_measurement_parsed"):
+        #         idx = len(contens)
+        #         os.chdir(os.path.join(os.getcwd(), "static_measurement_parsed"))
+        #         pathNonLabelizedMeasurement = os.getcwd()
+        #         found = True
+        #         idx = len(contens)
+        #     idx += 1
+        # found = False
+        # return  os.getcwd()
+        return self.find_directory_in_system("static_measurement_parsed")
     def FindDatasetsPath_Labelized(self):
-        os.chdir("..")  # Go above in directory
-        os.chdir("..")  # Go above in directory
-        contents = os.listdir(os.getcwd())  # Get Array of content of array
-        idx = 0
-        while idx < len(contents):
-            found = None
-            if contents[idx].find("Datasets") != -1:
-                os.chdir(os.path.join(os.getcwd(), "Datasets"))
-                contents = os.listdir(os.getcwd())
-                idx = len(contents)
-                jdx = 0
-                while jdx < len(contents):
-                    if contents[jdx].find("static_measurement_labelized") != -1:
-                        os.chdir(os.path.join(os.getcwd(), "static_measurement_labelized"))
-                        contents = os.listdir(os.getcwd())
-                        jdx = len(contents)
-                        if contents == 0:
-                            found = False
-                        else:
-                            found = True
-                    jdx += 1
-                #print("Changed " + os.getcwd())
-            # else:
-            # print("Nothing at " ,{idx} )
-            idx += 1
-            if idx == len(contents):
-                found = False
-        return os.getcwd()
+            #OLD VERSION OF SEEKING DESIRED DIRECTORY
+        # self.scriptPath = os.getcwd()
+        # os.chdir("..")  # Go above in directory
+        # os.chdir("..")  # Go above in directory
+        # contents = os.listdir(os.getcwd())  # Get Array of content of array
+        # idx = 0
+        # while idx < len(contents):
+        #     found = None
+        #     if contents[idx].find("Datasets") != -1:
+        #         os.chdir(os.path.join(os.getcwd(), "Datasets"))
+        #         contents = os.listdir(os.getcwd())
+        #         idx = len(contents)
+        #         jdx = 0
+        #         while jdx < len(contents):
+        #             if contents[jdx].find("static_measurement_labelized") != -1:
+        #                 os.chdir(os.path.join(os.getcwd(), "static_measurement_labelized"))
+        #                 contents = os.listdir(os.getcwd())
+        #                 jdx = len(contents)
+        #                 if contents == 0:
+        #                     found = False
+        #                 else:
+        #                     found = True
+        #             jdx += 1
+        #         #print("Changed " + os.getcwd())
+        #     # else:
+        #     # print("Nothing at " ,{idx} )
+        #     idx += 1
+        #     if idx == len(contents):
+        #         found = False
+        # return os.getcwd()
+        return self.find_directory_in_system("static_measurement_labelized")
     def getArrayOfPathMeasurement_Labelized(self):
-        return os.listdir(self.datasetsPath_Labelized)  # Get Array of content of array
-    def getArrayOfPathMeasurement_NonLabelized(self):
-        return os.listdir(self.datasetsPath_NonLabelized)  # Get Array of content of array
+        content = os.listdir(self.datasetsPath_Labelized)  # Get Array of content of array
+        i = 0
+        while i < len(content):
+            content[i] = os.path.join(self.datasetsPath_Labelized ,content[i])
+            i += 1
 
-    def ActualMeasurement(self):
-        return Datasets.measurement
-    def ActualPathOfMeasurement(self):
-        return Datasets.path
-    def ActualPos(self):
-        return [Datasets.pos_x,Datasets.pos_y]
+        return content
+    def getArrayOfPathMeasurement_NonLabelized(self):
+        content = os.listdir(self.datasetsPath_NonLabelized)  # Get Array of content of array
+        i = 0
+        while i < len(content):
+            content[i] = os.path.join(self.datasetsPath_NonLabelized ,content[i])
+            i += 1
+        return content
     def LoadDataset(self,pathOfMeasurement):
         data = np.genfromtxt(pathOfMeasurement, delimiter=',', skip_header=1)
         return np.genfromtxt(pathOfMeasurement, delimiter=',', skip_header=1)
+    def LoadDataset_specFrame(self,pathOfMeasurement,Frame):
+        idx = 0
+        data = self.LoadDataset(pathOfMeasurement)
+        dataFrame = []
+        checkedFrame = False
+        while idx < data.shape[0]:
+            if data[idx, 0] == Frame:
+                dataFrame.append(data[idx, :])
+                checkedFrame = True
+            elif checkedFrame == True:
+                idx = data.shape[0]
+            idx += 1
+        return np.array(dataFrame)
